@@ -2,50 +2,17 @@ import { useState, useEffect } from "react";
 
 function App() {
   const [loading, setLoading] = useState(true);
-  const [coins, setCoins] = useState([]);
-  const [money, setMoney] = useState("");
-  const onChange = (event) => setMoney(event.target.value);
-  const onSubmit = (event) => {
-    event.preventDefault();
-    if (money === "") {
-      return;
-    }
-    setMoney("");
-  };
+  const [movies, setMovies] = useState([]);
   useEffect(() => {
-    fetch("https://api.coinpaprika.com/v1/tickers")
+    fetch(`https://yts.mx/api
+    https://yts.mx/api/v2/list_movies.json?minimum_rating=9&sort_by=year`)
       .then((response) => response.json())
       .then((json) => {
-        setCoins(json);
+        setMovies(json.data.movies);
         setLoading(false);
       });
   }, []);
-  return (
-    <div>
-      <h1>The coins! {loading ? "" : `(${coins.length})`}</h1>
-      <form onSubmit={onSubmit}>
-        <input
-          onChange={onChange}
-          value={money}
-          type="text"
-          placeholder="Enter your money"
-        />
-        <button value="enter"></button>
-      </form>
-      {loading ? (
-        <strong>Loading...</strong>
-      ) : (
-        <select>
-          {coins.map((coin, index) => (
-            <option key={coin.id}>
-              {coin.name} ({coin.symbol}) : {money / coin.quotes.USD.price}
-              {coin.symbol}
-            </option>
-          ))}
-        </select>
-      )}
-    </div>
-  );
+  return <div>{loading ? <h1>Loading...</h1> : null}</div>;
 }
 
 export default App;
